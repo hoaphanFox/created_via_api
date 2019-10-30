@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active:
+      - default
+      - json-logging
+
+auth0security:
+  jwt:
+    default:
+      issuer: https://auth-staging.kayosports.com.au/
+      allowedAudiences:
+        - staging.kayosports.com.au

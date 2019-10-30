@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Bedrock file. DO NOT DELETE OR MODIFY. -->
+<configuration>
+    <springProperty name="FSA_LOGGING_LEVEL" source="logging.level.au.com.streamotion" defaultValue="INFO"/>
+    <springProperty name="LOG_FILE" source="logging.file" defaultValue="logs/application.log"/>
+    <springProperty name="SPRING_APP_NAME" source="spring.application.name"/>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <logger name="au.com.streamotion" level="${FSA_LOGGING_LEVEL}"/>
+
+    <springProfile name="!json-logging">
+        <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
+
+        <appender name="ASYNC_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="CONSOLE" />
+        </appender>
+
+        <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="FILE" />
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="ASYNC_CONSOLE"/>
+            <appender-ref ref="ASYNC_FILE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="json-logging">
+        <!-- Appender to log in JSON format -->
+        <!-- For more info see: https://github.com/logstash/logstash-logback-encoder -->
+        <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <customFields>{"service": "${SPRING_APP_NAME:-}", "pid": "${PID:-}"}</customFields>
+            </encoder>
+        </appender>
+
+        <appender name="JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+            <file>${LOG_FILE}</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+                <maxFileSize>${LOG_FILE_MAX_SIZE:-10MB}</maxFileSize>
+                <maxHistory>${LOG_FILE_MAX_HISTORY:-0}</maxHistory>
+            </rollingPolicy>
+        </appender>
+
+        <appender name="ASYNC_JSON_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="JSON_CONSOLE" />
+        </appender>
+
+        <appender name="ASYNC_JSON_FILE" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="JSON_FILE" />
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="ASYNC_JSON_CONSOLE"/>
+            <appender-ref ref="ASYNC_JSON_FILE"/>
+        </root>
+    </springProfile>
+    ​
+
+</configuration>

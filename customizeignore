@@ -1,0 +1,12 @@
+./.git
+./.mvn
+./.idea
+./target
+./.settings
+./logs
+./awslogs
+
+README.md
+./src
+
+# please make sure there's an empty line at the end of the file

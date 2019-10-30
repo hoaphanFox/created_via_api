@@ -1,0 +1,14 @@
+management:
+  server:
+    port: -1 # This will disable the actuator if the management port has been overridden in the application configuration.
+  metrics:
+    export:
+      newrelic:
+        enabled: false
+
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: ap-southeast-2

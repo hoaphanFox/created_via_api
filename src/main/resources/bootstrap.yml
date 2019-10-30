@@ -1,0 +1,5 @@
+aws:
+  secretsmanager:
+    enabled: true
+
+# PLEASE ADD ANY OTHER REQUIRED PROPERTIES BELOW THIS LINE

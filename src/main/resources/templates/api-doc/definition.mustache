@@ -1,0 +1,136 @@
+---
+# TODO: Do remember to change the API docs!
+
+openapi: 3.0.2
+
+info:
+  description: {{applicationTitle}} API Documentation.
+  version: "{{applicationVersion}} ({{commitId}})"
+  title: {{applicationTitle}}
+
+servers:
+- url: "{{contextPath}}/api"
+
+paths:
+  /greeting/{name}:
+    get:
+      summary: Ye olde greeting resource.
+      responses:
+        200:
+          description: All good, mate!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  content:
+                    type: string
+                    example: Hello, World!
+        400:
+          description: Looks like you did something wrong...
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                properties:
+                  type:
+                    type: string
+                    example: bad-request
+                  title:
+                    type: string
+                    example: Bad Request
+                  status:
+                    type: integer
+                    example: 400
+                  detail:
+                    type: string
+                    example: This is a RCF7807 problem sample (See https://tools.ietf.org/html/rfc7807)
+                  stacktrace:
+                    type: array
+                    items:
+                      type: string
+                externalDocs:
+                  description: RFC7807
+                  url: https://tools.ietf.org/html/rfc7807
+        500:
+          description: Looks like we did something wrong...
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                properties:
+                  type:
+                    type: string
+                    example: server-errort
+                  title:
+                    type: string
+                    example: Internal Server Error
+                  status:
+                    type: integer
+                    example: 500
+                  detail:
+                    type: string
+                    example: This is a RCF7807 problem sample (See https://tools.ietf.org/html/rfc7807)
+                  stacktrace:
+                    type: array
+                    items:
+                      type: string
+                externalDocs:
+                  description: RFC7807
+                  url: https://tools.ietf.org/html/rfc7807
+
+    parameters:
+    - name: name
+      in: path
+      required: true
+      description: The name you want us to greet you with. Use "my-bad" or "your-bad" if you want us to return an error.
+      schema:
+        type: string
+        default: World
+        example: World
+
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - type
+        - title
+        - status
+        - detail
+      properties:
+        type:
+          type: string
+          example: bad-request
+        title:
+          type: string
+          example: Bad Request
+        status:
+          type: integer
+          example: 400
+        detail:
+          type: string
+          example: This is a RCF7807 problem sample (See https://tools.ietf.org/html/rfc7807)
+        stacktrace:
+          type: array
+          items:
+            type: string
+
+externalDocs:
+  description: Open API Initiative
+  url: https://www.openapis.org/
+
+...

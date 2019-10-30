@@ -1,0 +1,71 @@
+spring:
+  profiles:
+    active:
+      - default
+      - local
+    #- json-logging # This profile enables JSON logging. Should be enabled for development, staging, and production environments.
+    #- json-afterburner # This profile enables the Afterburner module. Use only if you need to improve Jackson's performance.
+    #- demo # This profile enables a few beans used for demo purposes.
+  application:
+    name: @project.name@
+  sleuth:
+    sampler:
+      probability: 1.0 # This will send all events to Zipkin. You may want to reduce the probability for high throughput services.
+
+server:
+  port: 8080 # TODO: change to the appropriate port (not needed for kubernetes deployments)
+  error:
+    include-stacktrace: always # Should be set to "never" in production environments. Unfortunately "on_trace_param" does not work with the Problem library, so we just ignore it.
+  servlet:
+    context-path: # TODO: change to the appropriate context path, if required (not needed for kubernetes deployments)
+
+project:
+  name: @project.name@
+  description: @project.description@
+  version: @project.version@
+
+info:
+  build:
+    artifact: @project.artifactId@
+    name: ${project.name}
+    description: ${project.description}
+    version: ${project.version}
+    profile: ${spring.profiles.active}
+
+logging:
+  path: /var/log/${project.name}
+  level:
+    au.com.foxsports: info
+    io.micrometer.newrelic.NewRelicMeterRegistry: warn
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - info
+          - health
+          - refresh
+          - mappings
+          - loggers
+  metrics:
+    export:
+      newrelic:
+        step: 60s
+        enabled: true
+
+auth0security:
+  jwt:
+    default:
+      issuer: https://auth-dev.kayosports.com.au/
+      jwk-set-uri: ${auth0security.jwt.default.issuer}.well-known/jwks.json
+      allowedAudiences:
+        - dev.kayosports.com.au
+
+web:
+  cors:
+    allowedOrigins: '*'
+    allowedMethods: GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD
+    maxAge: 3600
+
+# PLEASE ADD ANY OTHER REQUIRED PROPERTIES BELOW THIS LINE

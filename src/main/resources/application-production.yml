@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active:
+      - default
+      - json-logging
+
+server:
+  error:
+    include-stacktrace: never
+
+auth0security:
+  jwt:
+    default:
+      issuer: https://auth.kayosports.com.au/
+      allowedAudiences:
+      - kayosports.com.au

@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active:
+      - default
+      - json-logging
+
+logging:
+  level:
+    au.com.foxsports: debug

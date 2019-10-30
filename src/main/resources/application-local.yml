@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active:
+      - default
+
+logging:
+  path: target
+  level:
+    au.com.foxsports: debug
+
+management:
+  metrics:
+    export:
+      newrelic:
+        enabled: false
+
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: ap-southeast-2
